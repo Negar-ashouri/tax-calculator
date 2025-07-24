@@ -1,3 +1,6 @@
+/**
+ * props type to send to child component taxResult
+ */
 export type TaxResultProps = {
     tax: number | null;
     error: string | null;
