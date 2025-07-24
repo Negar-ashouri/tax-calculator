@@ -5,9 +5,7 @@ import {calculateIncomeTax} from '../utils/calculateIncomeTax';
 import TaxResult from './TaxResult';
 import '../styles/TaxCalculatorForm.css';
 
-
 const TAX_YEARS = ['2019', '2020', '2021', '2022'] as const;
-
 
 const TaxCalculatorForm = () => {
     const [income, setIncome] = useState<string>('');
@@ -28,8 +26,12 @@ const TaxCalculatorForm = () => {
           try {
             const data = await fetchTaxBrackets(year);
             setBrackets(data.tax_brackets);
-          } catch (err: any) {
-            setError(err.message || 'Failed to fetch tax brackets. Please try again later.');
+          } catch (err: unknown) {
+            if (err instanceof Error) {
+              setError(err.message);
+            } else {
+              setError('Failed to fetch tax brackets. Please try again later.');
+            }
             console.error(err);
             setBrackets(null);
           } finally {
