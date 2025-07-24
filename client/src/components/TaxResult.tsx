@@ -1,4 +1,3 @@
-import React from "react";
 import type { TaxResultProps } from "../types/TaxResultProps"; 
 import '../styles/TaxCalculatorForm.css';
 

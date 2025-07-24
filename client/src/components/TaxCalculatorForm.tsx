@@ -17,49 +17,51 @@ const TaxCalculatorForm = () => {
     const [submitted, setSubmitted] = useState(false);
 
 
-    useEffect(() => {
-        const loadBrackets = async () => {
-          setSubmitted(false);
-          setLoading(true);
-          setError(null);
-    
-          try {
-            const data = await fetchTaxBrackets(year);
-            setBrackets(data.tax_brackets);
-          } catch (err: unknown) {
-            if (err instanceof Error) {
-              setError(err.message);
-            } else {
-              setError('Failed to fetch tax brackets. Please try again later.');
-            }
-            console.error(err);
-            setBrackets(null);
-          } finally {
-            setLoading(false);
-          }
-        };
-    
-        loadBrackets();
-      }, [year]);
 
       useEffect(() => {
         setSubmitted(false); // hides tax when income changes
       }, [income]);
+      
+      useEffect(() => {
+        setSubmitted(false); // hides tax when year changes
+      }, [year]);
     
-      const handleSubmit = (e: React.FormEvent) => {
+      const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const incomeNumber = parseFloat(income);
         setError(null);
-
-        if (!brackets || isNaN(incomeNumber) || incomeNumber <= 0) {
-          setError('Please enter a valid income and wait for tax brackets to load.');
+        setSubmitted(false);
+        setLoading(true);
+      
+        if (isNaN(incomeNumber) || incomeNumber <= 0) {
+          setError('Please enter a valid income.');
+          setLoading(false);
           return;
         }
       
-        const calculatedTax = calculateIncomeTax(incomeNumber, brackets);
-        setTax(calculatedTax);
-        setSubmitted(true);
-      }
+        try {
+          const data = await fetchTaxBrackets(Number(year));
+          setBrackets(data.tax_brackets);
+          if(brackets){
+            const calculatedTax = calculateIncomeTax(incomeNumber, data.tax_brackets);
+            setTax(calculatedTax);
+            setSubmitted(true);
+          }
+          const calculatedTax = calculateIncomeTax(incomeNumber, data.tax_brackets);
+          setTax(calculatedTax);
+          setSubmitted(true);
+        } catch (err: unknown) {
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError('Failed to fetch tax brackets. Please try again later.');
+          }
+          console.error(err);
+          setBrackets(null);
+        } finally {
+          setLoading(false);
+        }
+      };
 
     return (
         <div className="tax-calculator">

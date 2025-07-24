@@ -26,7 +26,7 @@ export const fetchTaxBrackets = async (
   
     if (!response.ok) {
       throw new Error(
-        `Error fetching tax brackets: ${response.statusText} ! please refresh!`
+        `Error fetching tax brackets: ${response.statusText} !try again!`
       );
     }
   
