@@ -1,6 +1,7 @@
 import { fetchTaxBrackets } from "../taxCalculatorApi";
 import type { TaxBracketsResponse } from "../../types/TaxBracketsResponse";
 
+
 describe("fetchTaxBrackets", () => {
   const mockResponse: TaxBracketsResponse = {
     tax_brackets: [

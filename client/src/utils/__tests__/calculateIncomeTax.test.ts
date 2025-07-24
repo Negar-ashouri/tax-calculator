@@ -1,6 +1,7 @@
 import { calculateIncomeTax } from '../calculateIncomeTax';
 import type { TaxBracket } from '../../types/TaxBracket';
 
+
 describe('calculateIncomeTax with provided tax brackets', () => {
   const brackets: TaxBracket[] = [
     { min: 0, max: 50197, rate: 0.15 },

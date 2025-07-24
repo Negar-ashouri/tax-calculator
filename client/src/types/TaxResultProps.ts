@@ -7,4 +7,4 @@ export type TaxResultProps = {
     loading: boolean;
     submitted: boolean;
     year: string;
-  };
+};

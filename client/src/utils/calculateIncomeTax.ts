@@ -18,7 +18,7 @@ export function calculateIncomeTax(
 
     // no income or incomes lower than min falls into this bracket, no tax
     if (income <= min) break;
-
+    
     // determine the upper limit of income taxed at this rate
     const upper = max ?? income; // if no max then this is the top bracket
     const taxableAmount = Math.min(income, upper) - min;

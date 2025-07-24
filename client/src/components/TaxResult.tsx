@@ -2,6 +2,7 @@ import React from "react";
 import type { TaxResultProps } from "../types/TaxResultProps"; 
 import '../styles/TaxCalculatorForm.css';
 
+
 function TaxResult({ tax, error, loading, submitted, year }: TaxResultProps) {
     return (
       <div className="tax-calculator-message">
@@ -16,6 +17,6 @@ function TaxResult({ tax, error, loading, submitted, year }: TaxResultProps) {
         )}
       </div>
     );
-  }
+}
 
 export default TaxResult;

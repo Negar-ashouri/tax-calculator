@@ -2,6 +2,7 @@ import type { TaxBracketsResponse } from "../types/TaxBracketsResponse";
 
 const BASE_URL = "http://localhost:5001/tax-calculator";
 const VALID_YEARS = [2019, 2020, 2021, 2022];
+
 /**
  * Fetch tax bracket data from the backend API.
  *
