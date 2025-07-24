@@ -4,6 +4,6 @@
  */
  export type TaxBracket = {
     min: number;
-    max?: number;
+    max: number | null;
     rate: number;
   }

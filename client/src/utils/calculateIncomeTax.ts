@@ -26,5 +26,5 @@ export function calculateIncomeTax(
     tax += taxableAmount * rate;
   }
 
-  return tax;
+  return Math.round(tax * 100) / 100;
 }
