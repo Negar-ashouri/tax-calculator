@@ -13,9 +13,13 @@ const VALID_YEARS = [2019, 2020, 2021, 2022];
 export const fetchTaxBrackets = async (
     year?: number
   ): Promise<TaxBracketsResponse> => {
-    if (year !== undefined && !VALID_YEARS.includes(year)) {
-        throw new Error(`Invalid year: ${year}. Valid years are ${VALID_YEARS.join(", ")}`);
-    }
+    if (year !== undefined) {
+        const numericYear = Number(year);
+        if (!VALID_YEARS.includes(numericYear)) {
+          throw new Error(`Invalid year: ${year}. Valid years are ${VALID_YEARS.join(", ")}`);
+        }
+        year = numericYear;
+      }
     const url = year ? `${BASE_URL}/tax-year/${year}` : BASE_URL;
     const response = await fetch(url);
   

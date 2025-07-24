@@ -2,20 +2,25 @@ import React, { useEffect, useState } from 'react';
 import type { TaxBracket } from '../types/TaxBracket';
 import { fetchTaxBrackets } from '../api/taxCalculatorApi';
 import {calculateIncomeTax} from '../utils/calculateIncomeTax';
+import '../styles/TaxCalculatorForm.css';
+
 
 const TAX_YEARS = ['2019', '2020', '2021', '2022'] as const;
 
 
 const TaxCalculatorForm = () => {
-    const [income, setIncome] = useState<number>(0);
+    const [income, setIncome] = useState<string>('');
     const [year, setYear] = useState<string>('2022');
     const [brackets, setBrackets] = useState<TaxBracket[] | null>(null);
     const [tax, setTax] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [submitted, setSubmitted] = useState(false);
+
 
     useEffect(() => {
         const loadBrackets = async () => {
+          setSubmitted(false);
           setLoading(true);
           setError(null);
     
@@ -34,65 +39,75 @@ const TaxCalculatorForm = () => {
         loadBrackets();
       }, [year]);
 
+      useEffect(() => {
+        setSubmitted(false); // hides tax when income changes
+      }, [income]);
     
       const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!brackets || income <= 0) {
+        const incomeNumber = parseFloat(income);
+
+        if (!brackets || isNaN(incomeNumber) || incomeNumber <= 0) {
           setError('Please enter a valid income and wait for tax brackets to load.');
           return;
         }
-        const calculatedTax = calculateIncomeTax(income, brackets);
+      
+        const calculatedTax = calculateIncomeTax(incomeNumber, brackets);
         setTax(calculatedTax);
+        setSubmitted(true);
       }
 
       return (
-        <div className="">
-          <h2 className="">Income Tax Calculator</h2>
-    
-          <form onSubmit={handleSubmit} className="">
-            <div>
-              <label className="" htmlFor="income">Annual Income ($)</label>
-              <input
+        <div className="tax-calculator">
+        <h2 className="tax-calculator-title">Income Tax Calculator</h2>
+
+        <form onSubmit={handleSubmit} className="tax-calculator-form">
+            <div className="tax-calculator-field">
+            <label className="tax-calculator-label" htmlFor="income">
+                Annual Income ($)
+            </label>
+            <input
                 type="number"
                 id="income"
                 value={income}
-                onChange={(e) => setIncome(parseFloat(e.target.value))}
-                className=""
-                min={0}
-                step={0.01}
-                required
-              />
+                onChange={(e) => setIncome(e.target.value)}
+                placeholder="Enter income in CAD"
+                className="tax-calculator-input"
+            />
             </div>
-    
-            <div>
-              <label className="" htmlFor="year">Tax Year</label>
-              <select
+
+            <div className="tax-calculator-field">
+            <label className="tax-calculator-label" htmlFor="year">
+                Tax Year
+            </label>
+            <select
                 id="year"
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
-                className=""
-              >
-                {TAX_YEARS.map((y) => (
-                  <option key={y} value={y}>{y}</option>
-                ))}
-              </select>
-            </div>
-    
-            <button
-              type="submit"
-              className=""
+                className="tax-calculator-select"
             >
-              Calculate Tax
+                {TAX_YEARS.map((y) => (
+                <option key={y} value={y}>{y}</option>
+                ))}
+            </select>
+            </div>
+
+            <button type="submit" className="tax-calculator-button">
+            Calculate Tax
             </button>
-          </form>
-    
-          {loading && <p className="">Loading tax brackets...</p>}
-          {error && <p className="">{error}</p>}
-          {tax !== null && (
-            <p className="">
+        </form>
+
+        {loading && (
+            <p className="tax-calculator-message">
+            Loading tax brackets{year ? ` for ${year}` : ''}...
+            </p>
+        )}
+        {error && <p className="tax-calculator-error">{error}</p>}
+        {!loading && submitted && tax !== null && (
+            <p className="tax-calculator-result">
             Estimated tax: ${tax}
             </p>
-           )}
+        )}
         </div>
       );
     };
