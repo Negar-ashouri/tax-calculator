@@ -1,4 +1,4 @@
-import { TaxBracketsResponse } from "../types";
+import type { TaxBracketsResponse } from "../types/TaxBracketsResponse";
 
 const BASE_URL = "http://localhost:5001/tax-calculator";
 /**

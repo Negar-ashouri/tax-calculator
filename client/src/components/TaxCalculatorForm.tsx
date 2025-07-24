@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { TaxBracket } from '../types';
+import type { TaxBracket } from '../types/TaxBracket';
 import { fetchTaxBrackets } from '../api/taxCalculatorApi';
+const TAX_YEARS = ['2019', '2020', '2021', '2022'] as const;
 
 
 const TaxCalculatorForm = () => {
@@ -30,12 +31,11 @@ const TaxCalculatorForm = () => {
         loadBrackets();
       }, [year]);
 
-
       return (
         <div className="">
           <h2 className="">Income Tax Calculator</h2>
     
-          <form onSubmit={handleSubmit} className="">
+          <form className="">
             <div>
               <label className="" htmlFor="income">Annual Income ($)</label>
               <input

@@ -1,8 +1,8 @@
-import { TaxBracket } from "./TaxBracket";
+import type { TaxBracket } from "./TaxBracket";
 
 /**
  * API response shape for GET /tax-calculator
  */
-export interface TaxBracketsResponse {
+export type TaxBracketsResponse = {
   tax_brackets: TaxBracket[];
 }
