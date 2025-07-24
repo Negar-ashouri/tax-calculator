@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import type { TaxBracket } from '../types/TaxBracket';
 import { fetchTaxBrackets } from '../api/taxCalculatorApi';
+import {calculateIncomeTax} from '../utils/calculateIncomeTax';
+
 const TAX_YEARS = ['2019', '2020', '2021', '2022'] as const;
 
 
@@ -20,9 +22,10 @@ const TaxCalculatorForm = () => {
           try {
             const data = await fetchTaxBrackets(year);
             setBrackets(data.tax_brackets);
-          } catch (err) {
-            setError('Failed to fetch tax brackets. Please try again later.');
+          } catch (err: any) {
+            setError(err.message || 'Failed to fetch tax brackets. Please try again later.');
             console.error(err);
+            setBrackets(null);
           } finally {
             setLoading(false);
           }
@@ -38,6 +41,8 @@ const TaxCalculatorForm = () => {
           setError('Please enter a valid income and wait for tax brackets to load.');
           return;
         }
+        const calculatedTax = calculateIncomeTax(income, brackets);
+        setTax(calculatedTax);
       }
 
       return (
@@ -83,6 +88,11 @@ const TaxCalculatorForm = () => {
     
           {loading && <p className="">Loading tax brackets...</p>}
           {error && <p className="">{error}</p>}
+          {tax !== null && (
+            <p className="">
+            Estimated tax: ${tax}
+            </p>
+           )}
         </div>
       );
     };
