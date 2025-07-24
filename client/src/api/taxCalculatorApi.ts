@@ -1,6 +1,7 @@
 import type { TaxBracketsResponse } from "../types/TaxBracketsResponse";
 
 const BASE_URL = "http://localhost:5001/tax-calculator";
+const VALID_YEARS = [2019, 2020, 2021, 2022];
 /**
  * Fetch tax bracket data from the backend API.
  *
@@ -12,6 +13,9 @@ const BASE_URL = "http://localhost:5001/tax-calculator";
 export const fetchTaxBrackets = async (
     year?: number
   ): Promise<TaxBracketsResponse> => {
+    if (year !== undefined && !VALID_YEARS.includes(year)) {
+        throw new Error(`Invalid year: ${year}. Valid years are ${VALID_YEARS.join(", ")}`);
+    }
     const url = year ? `${BASE_URL}/tax-year/${year}` : BASE_URL;
     const response = await fetch(url);
   
