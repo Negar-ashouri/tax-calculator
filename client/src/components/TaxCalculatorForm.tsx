@@ -31,11 +31,20 @@ const TaxCalculatorForm = () => {
         loadBrackets();
       }, [year]);
 
+    
+      const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!brackets || income <= 0) {
+          setError('Please enter a valid income and wait for tax brackets to load.');
+          return;
+        }
+      }
+
       return (
         <div className="">
           <h2 className="">Income Tax Calculator</h2>
     
-          <form className="">
+          <form onSubmit={handleSubmit} className="">
             <div>
               <label className="" htmlFor="income">Annual Income ($)</label>
               <input
