@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import type { TaxBracket } from '../types/TaxBracket';
 import { fetchTaxBrackets } from '../api/taxCalculatorApi';
 import {calculateIncomeTax} from '../utils/calculateIncomeTax';
+import TaxResult from './TaxResult';
 import '../styles/TaxCalculatorForm.css';
 
 
@@ -46,6 +47,7 @@ const TaxCalculatorForm = () => {
       const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const incomeNumber = parseFloat(income);
+        setError(null);
 
         if (!brackets || isNaN(incomeNumber) || incomeNumber <= 0) {
           setError('Please enter a valid income and wait for tax brackets to load.');
@@ -57,10 +59,8 @@ const TaxCalculatorForm = () => {
         setSubmitted(true);
       }
 
-      return (
+    return (
         <div className="tax-calculator">
-        <h2 className="tax-calculator-title">Income Tax Calculator</h2>
-
         <form onSubmit={handleSubmit} className="tax-calculator-form">
             <div className="tax-calculator-field">
             <label className="tax-calculator-label" htmlFor="income">
@@ -96,20 +96,15 @@ const TaxCalculatorForm = () => {
             Calculate Tax
             </button>
         </form>
-
-        {loading && (
-            <p className="tax-calculator-message">
-            Loading tax brackets{year ? ` for ${year}` : ''}...
-            </p>
-        )}
-        {error && <p className="tax-calculator-error">{error}</p>}
-        {!loading && submitted && tax !== null && (
-            <p className="tax-calculator-result">
-            Estimated tax: ${tax}
-            </p>
-        )}
+        <TaxResult
+            tax={tax}
+            error={error}
+            loading={loading}
+            submitted={submitted}
+            year={year}
+        />
         </div>
-      );
-    };
-    
-    export default TaxCalculatorForm;
+    );
+};
+
+export default TaxCalculatorForm;

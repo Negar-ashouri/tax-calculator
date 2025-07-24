@@ -1,0 +1,8 @@
+:root {
+    --color-primary: #1d2d44;          /* dark slate gray */
+    --color-primary-hover: #3e5c76;    /* darker gray */
+    --color-background: #c0c0c0;       /* white */
+    --color-box:#ebebeb;
+    --color-text: #c0c0c0;             /* near black */
+    --color-error: #ff6700;            /* red */
+  }
