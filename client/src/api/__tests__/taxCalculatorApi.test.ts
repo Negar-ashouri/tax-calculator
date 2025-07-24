@@ -60,7 +60,7 @@ describe("fetchTaxBrackets", () => {
     });
 
     await expect(fetchTaxBrackets(2022)).rejects.toThrow(
-      "Error fetching tax brackets: 500 Internal Server Error"
+      "Error fetching tax brackets: Internal Server Error ! please refresh!"
     );
   });
 
